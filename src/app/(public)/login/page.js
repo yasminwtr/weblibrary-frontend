@@ -2,7 +2,6 @@
 import { Form, Input, Button } from "@heroui/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from 'js-cookie';
 import { useUser } from "@/contexts/UserContext";
 import { login, verifyToken } from "@/services/auth";
 
@@ -22,7 +21,6 @@ export default function Login() {
 
     try {
       const { token } = await login(email, password);
-      Cookies.set('token', token, { expires: 3 / 24 });
 
       const userData = await verifyToken(token);
       setUser(userData);
