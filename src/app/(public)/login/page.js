@@ -23,6 +23,8 @@ export default function Login() {
       await login(email, password);
 
       const userData = await verifyToken();
+      console.log(userData);
+      
       setUser(userData);
 
       router.replace('/booklist');
