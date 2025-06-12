@@ -3,14 +3,15 @@ import { useState, useEffect } from "react";
 import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Form, Input, RadioGroup, Radio } from "@heroui/react";
 import { api } from "@/services/api";
 
+const formInitialValues = {
+    name: "",
+    email: "",
+    password: "",
+    type: "reader"
+}
+
 export default function UserModal({ isOpen, onOpenChange, user, fetchUsers }) {
     const [errors, setErrors] = useState({});
-    const formInitialValues = {
-        name: "",
-        email: "",
-        password: "",
-        type: "reader"
-    }
     const [formValues, setFormValues] = useState(formInitialValues);
 
     useEffect(() => {

@@ -3,19 +3,20 @@ import { useState, useEffect, useRef } from "react";
 import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Form, Input, Textarea, Select, SelectItem } from "@heroui/react";
 import { api } from "@/services/api";
 
+const formInitialValues = {
+    title: "",
+    author: "",
+    publisher: "",
+    year: "",
+    synopsis: "",
+    totalCopies: "",
+    image: null,
+    categories: []
+}
+
 export default function BookModal({ isOpen, onOpenChange, book, fetchBooks, categories }) {
     const [errors, setErrors] = useState({});
     const fileInputRef = useRef(null);
-    const formInitialValues = {
-        title: "",
-        author: "",
-        publisher: "",
-        year: "",
-        synopsis: "",
-        totalCopies: "",
-        image: null,
-        categories: []
-    }
     const [formValues, setFormValues] = useState(formInitialValues);
     const [imagePreview, setImagePreview] = useState(null);
 
@@ -33,7 +34,7 @@ export default function BookModal({ isOpen, onOpenChange, book, fetchBooks, cate
             });
 
             if (book.image) {
-                setImagePreview(`${process.env.NEXT_PUBLIC_API_BASE_URL || ''}${book.image}`);
+                setImagePreview(`"https://weblibrary-api.up.railway.app" || ''}${book.image}`);
             } else {
                 setImagePreview(null);
             }
