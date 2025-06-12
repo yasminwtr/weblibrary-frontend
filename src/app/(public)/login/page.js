@@ -7,8 +7,8 @@ import { useUser } from "@/contexts/UserContext";
 import { login, verifyToken } from "@/services/auth";
 
 export default function Login() {
-  const [email, setEmail] = useState('1@g.com');
-  const [password, setPassword] = useState('1');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { setUser } = useUser();
   const router = useRouter();
 
