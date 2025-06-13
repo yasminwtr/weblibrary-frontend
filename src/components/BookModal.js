@@ -34,7 +34,7 @@ export default function BookModal({ isOpen, onOpenChange, book, fetchBooks, cate
             });
 
             if (book.image) {
-                setImagePreview(`"https://weblibrary-api.up.railway.app" || ''}${book.image}`);
+                setImagePreview(`https://weblibrary-api.up.railway.app${book.image}`);
             } else {
                 setImagePreview(null);
             }

@@ -6,7 +6,6 @@ import { PointsIcon } from "@/components/Icons";
 import BookModal from "@/components/BookModal";
 import ModalInfo from "@/components/ModalInfo";
 import { api } from "@/services/api";
-import { useBooks } from "@/hooks/useBooks";
 import { useCategories } from "@/hooks/useCategories";
 
 export const columns = [
@@ -17,10 +16,9 @@ export const columns = [
     { name: "AÇÕES", uid: "actions" },
 ];
 
-export default function BooksAdmin() {
+export default function BooksAdmin({ initialBooks, fetchBooks }) {
     const [book, setBook] = useState(null);
     const { categories, fetchCategories } = useCategories();
-    const { books, fetchBooks } = useBooks();
     const bookModal = useDisclosure();
     const deleteBookModal = useDisclosure();
 
@@ -94,7 +92,7 @@ export default function BooksAdmin() {
             <h1 className="text-lg font-semibold mb-4">Livros</h1>
 
             <TableFunctions
-                items={books}
+                items={initialBooks}
                 columns={columns}
                 renderCell={renderCell}
                 addButton={true}
@@ -106,7 +104,7 @@ export default function BooksAdmin() {
                 book={book}
                 isOpen={bookModal.isOpen}
                 onOpenChange={bookModal.onOpenChange}
-                // fetchBooks={fetchBooks}
+                fetchBooks={fetchBooks}
                 categories={categories}
             />
 
