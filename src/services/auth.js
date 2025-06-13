@@ -5,6 +5,7 @@ export async function login(email, password) {
 
   const { token } = response.data;
   localStorage.setItem('token', token);
+  document.cookie = `token=${token}; path=/; secure; samesite=strict`;
 
   return response.data;
 }
