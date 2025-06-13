@@ -15,8 +15,7 @@ export default function BookReviews({ bookId }) {
     const createReview = async () => {
         try {
             await api.post('/bookreviews',
-                { bookId: bookId, comment: document.querySelector('textarea').value },
-                { withCredentials: true }
+                { bookId: bookId, comment: document.querySelector('textarea').value }
             );
 
             alert('Avaliação realizada com sucesso.');
@@ -32,7 +31,7 @@ export default function BookReviews({ bookId }) {
         if (!confirm('Tem certeza que deseja deletar essa avaliação?')) return;
 
         try {
-            await api.delete(`/bookreviews/${reviewId}`, { withCredentials: true });
+            await api.delete(`/bookreviews/${reviewId}`);
             alert('Avaliação deletada com sucesso.');
             fetchBookReviews();
         } catch (err) {

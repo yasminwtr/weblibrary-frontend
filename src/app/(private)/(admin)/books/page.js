@@ -1,43 +1,35 @@
-import { notFound } from 'next/navigation'
-import { api } from "@/services/api";
-import BooksAdmin from "@/components/BooksAdmin";
-import { cookies } from 'next/headers'
+'use client';
+import { useEffect, useState } from 'react';
+import { api } from '@/services/api';
+import { useRouter } from 'next/navigation';
+import BooksAdmin from '@/components/BooksAdmin';
 
-async function getToken() {
-    const cookieStore = await cookies();
-    return cookieStore.get('token')?.value;
-}
+export default function BooksPage() {
+  const [books, setBooks] = useState(null);
+  const router = useRouter();
 
-async function fetchAllBooks(token) {
-    try {
-        const res = await api.get(`/books`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return router.replace('/login');
+
+      try {
+        const res = await api.get('/books', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
+        setBooks(res.data);
+      } catch (err) {
+        console.error('Erro ao buscar livros:', err);
+        router.replace('/login');
+      }
+    };
 
-        return res.data;
+    fetchBooks();
+  }, [router]);
 
-    } catch (err) {
-        console.error('Erro ao buscar os livros:', err);
-        return undefined;
-    }
-}
+  if (!books) return null;
 
-export default async function BooksPage() {
-    const token = await getToken();
-    if (!token) {
-        notFound();
-    }
-
-    const [initialBooks] = await Promise.all([
-        fetchAllBooks(token),
-    ]);
-
-    if (!initialBooks) {
-        notFound();
-    }
-
-    return <BooksAdmin initialBooks={initialBooks} />;
+  return <BooksAdmin initialBooks={books} />;
 }

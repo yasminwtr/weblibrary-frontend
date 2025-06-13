@@ -46,7 +46,7 @@ export default function LoansAdmin({ initialLoans }) {
 
     const fetchLoans = async () => {
         try {
-            const res = await api.get("/loans", { withCredentials: true });
+            const res = await api.get("/loans");
             setLoans(res.data);
 
         } catch (err) {
@@ -58,9 +58,7 @@ export default function LoansAdmin({ initialLoans }) {
         const { id } = selectedLoan;
 
         try {
-            await api.patch(`/loans/${id}/conclude`,
-                { withCredentials: true }
-            );
+            await api.patch(`/loans/${id}/conclude`);
 
             alert('Empréstimo concluído com sucesso.');
             loanModal.onClose();

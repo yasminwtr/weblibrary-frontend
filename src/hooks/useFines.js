@@ -6,7 +6,7 @@ export function useFines() {
 
     const fetchFines = useCallback(async (id) => {
         try {
-            const res = await api.get(`/loans/${id}/fines`, { withCredentials: true });
+            const res = await api.get(`/loans/${id}/fines`);
             setFines(res.data);
         } catch (err) {
             console.error("Erro ao atualizar os empréstimos:", err);

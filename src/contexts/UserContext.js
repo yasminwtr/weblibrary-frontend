@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 const UserContext = createContext({
   user: null,
   loading: true,
-  setUser: () => {},
+  setUser: () => { },
 });
 
 export const UserProvider = ({ children }) => {
@@ -14,12 +14,15 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = localStorage.getItem('token');
     if (!token) return setLoading(false);
 
-    verifyToken(token)
+    verifyToken()
       .then((userData) => setUser(userData))
-      .catch(() => setUser(null))
+      .catch(() => {
+        localStorage.removeItem('token');
+        setUser(null);
+      })
       .finally(() => setLoading(false));
   }, []);
 

@@ -1,43 +1,35 @@
-import { notFound } from 'next/navigation'
-import { api } from "@/services/api";
-import ReservationsInfo from "@/components/ReservationsInfo";
-import { cookies } from 'next/headers'
+'use client';
+import { useEffect, useState } from 'react';
+import { api } from '@/services/api';
+import { useRouter } from 'next/navigation';
+import ReservationsInfo from '@/components/ReservationsInfo';
 
-async function getToken() {
-  const cookieStore = await cookies();
-  return cookieStore.get('token')?.value;
-}
+export default function UserReservationsPage() {
+  const [userReservationsLoans, setUserReservationsLoans] = useState(null);
+  const router = useRouter();
 
-async function fetchUserReservationsAndLoans(token) {
-  try {
-    const res = await api.get(`/users/reservations-and-loans`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true,
-    });
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return router.replace('/login');
 
-    return res.data;
+      try {
+        const res = await api.get('/users/reservations-and-loans', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserReservationsLoans(res.data);
+      } catch (err) {
+        console.error('Erro ao buscar as reservas:', err);
+        router.replace('/login');
+      }
+    };
 
-  } catch (err) {
-    console.error('Erro ao buscar as reservas:', err);
-    return undefined;
-  }
-}
+    fetchData();
+  }, [router]);
 
-export default async function UserReservationsPage() {
-  const token = await getToken();
-  if (!token) {
-    notFound();
-  }
-
-  const [userReservationsLoans] = await Promise.all([
-    fetchUserReservationsAndLoans(token),
-  ]);
-
-  if (!userReservationsLoans) {
-    notFound();
-  }
+  if (!userReservationsLoans) return <p>Carregando...</p>;
 
   return <ReservationsInfo userReservationsLoans={userReservationsLoans} />;
 }

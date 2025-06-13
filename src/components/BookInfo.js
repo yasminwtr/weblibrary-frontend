@@ -21,11 +21,7 @@ export default function BookInfo({ book, availability, breadcrumbContext }) {
         }
 
         try {
-            await api.post('/reservations',
-                { bookId: id },
-                { withCredentials: true }
-            );
-
+            await api.post('/reservations', { bookId: id });
             alert('Reserva realizada com sucesso.');
 
         } catch (err) {

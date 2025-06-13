@@ -1,43 +1,36 @@
-import { notFound } from 'next/navigation'
-import { api } from "@/services/api";
-import LoansAdmin from "@/components/LoansAdmin";
-import { cookies } from 'next/headers'
+'use client';
+import { useEffect, useState } from 'react';
+import { api } from '@/services/api';
+import { useRouter } from 'next/navigation';
+import LoansAdmin from '@/components/LoansAdmin';
 
-async function getToken() {
-    const cookieStore = await cookies();
-    return cookieStore.get('token')?.value;
-}
+export default function LoansPage() {
+  const [loans, setLoans] = useState(null);
+  const router = useRouter();
 
-async function fetchAllLoans(token) {
-    try {
-        const res = await api.get(`/loans`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
+  useEffect(() => {
+    const fetchLoans = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return router.replace('/login');
+
+      try {
+        const res = await api.get('/loans', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
-        return res.data;
+        setLoans(res.data);
+      } catch (err) {
+        console.error('Erro ao buscar empréstimos:', err);
+        router.replace('/login');
+      }
+    };
 
-    } catch (err) {
-        console.error('Erro ao buscar os empréstimos:', err);
-        return undefined;
-    }
-}
+    fetchLoans();
+  }, [router]);
 
-export default async function LoansPage() {
-    const token = await getToken();
-    if (!token) {
-        notFound();
-    }
+  if (!loans) return null;
 
-    const [initialLoans] = await Promise.all([
-        fetchAllLoans(token),
-    ]);
-
-    if (!initialLoans) {
-        notFound();
-    }
-
-    return <LoansAdmin initialLoans={initialLoans} />;
+  return <LoansAdmin initialLoans={loans} />;
 }

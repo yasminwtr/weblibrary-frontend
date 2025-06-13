@@ -1,43 +1,36 @@
-import { notFound } from 'next/navigation'
-import { api } from "@/services/api";
-import UsersAdmin from "@/components/UsersAdmin";
-import { cookies } from 'next/headers'
+'use client';
+import { useEffect, useState } from 'react';
+import { api } from '@/services/api';
+import { useRouter } from 'next/navigation';
+import UsersAdmin from '@/components/UsersAdmin';
 
-async function getToken() {
-    const cookieStore = await cookies();
-    return cookieStore.get('token')?.value;
-}
+export default function UsersPage() {
+  const [users, setUsers] = useState(null);
+  const router = useRouter();
 
-async function fetchAllUsers(token) {
-    try {
-        const res = await api.get(`/users`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return router.replace('/login');
+
+      try {
+        const res = await api.get('/users', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
-        return res.data;
-
-    } catch (err) {
+        setUsers(res.data);
+      } catch (err) {
         console.error('Erro ao buscar os usuários:', err);
-        return undefined;
-    }
-}
+        router.replace('/login');
+      }
+    };
 
-export default async function UsersPage() {
-    const token = await getToken();
-    if (!token) {
-        notFound();
-    }
+    fetchUsers();
+  }, [router]);
 
-    const [initialUsers] = await Promise.all([
-        fetchAllUsers(token),
-    ]);
+  if (!users) return null;
 
-    if (!initialUsers) {
-        notFound();
-    }
-
-    return <UsersAdmin initialUsers={initialUsers} />;
+  return <UsersAdmin initialUsers={users} />;
 }

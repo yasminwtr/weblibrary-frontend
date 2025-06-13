@@ -127,7 +127,7 @@ export const Navigationbar = () => {
 
                             <DropdownItem key="logout" color="danger" startContent={<LogoutIcon className={iconClasses} />}
                                 onPress={() => {
-                                    Cookies.remove('token');
+                                    localStorage.removeItem('token');
                                     setUser(null);
                                     router.replace('/login');
                                 }}

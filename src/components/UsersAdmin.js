@@ -26,7 +26,7 @@ export default function UsersAdmin({ initialUsers }) {
 
     const fetchUsers = async () => {
         try {
-            const res = await api.get("/users", { withCredentials: true });
+            const res = await api.get("/users");
             setUsers(res.data);
 
         } catch (err) {

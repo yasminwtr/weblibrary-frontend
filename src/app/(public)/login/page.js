@@ -22,9 +22,7 @@ export default function Login() {
     try {
       await login(email, password);
 
-      const userData = await verifyToken();
-      console.log(userData);
-      
+      const userData = await verifyToken();      
       setUser(userData);
 
       router.replace('/booklist');

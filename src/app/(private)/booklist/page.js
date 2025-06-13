@@ -1,5 +1,4 @@
 export const dynamic = 'force-dynamic';
-
 import { notFound } from 'next/navigation'
 import { api } from "@/services/api";
 import BookList from "@/components/Booklist";

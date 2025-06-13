@@ -53,11 +53,11 @@ export default function UserModal({ isOpen, onOpenChange, user, fetchUsers }) {
             };
 
             if (user) {
-                await api.patch(`/users/${user.id}`, payload, { withCredentials: true });
+                await api.patch(`/users/${user.id}`, payload);
                 alert("Usuário atualizado com sucesso.");
 
             } else {
-                await api.post("/users", payload, { withCredentials: true });
+                await api.post("/users", payload);
                 alert("Usuário criado com sucesso.");
             }
 

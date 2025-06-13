@@ -36,7 +36,7 @@ export default function ReservationsAdmin({ initialReservations }) {
 
     const fetchReservations = async () => {
         try {
-            const res = await api.get("/reservations", { withCredentials: true });
+            const res = await api.get("/reservations");
             setReservations(res.data);
         } catch (err) {
             console.error("Erro ao atualizar as reservas:", err);
@@ -48,16 +48,11 @@ export default function ReservationsAdmin({ initialReservations }) {
 
         try {
             if (type === 'cancel') {
-                await api.patch(`/reservations/${id}/cancel`,
-                    { withCredentials: true }
-                );
+                await api.patch(`/reservations/${id}/cancel`);
                 alert('Reserva cancelada com sucesso.');
 
             } else if (type === 'conclude') {
-                await api.patch(`/reservations/${id}/conclude`,
-                    { userId, bookId },
-                    { withCredentials: true }
-                );
+                await api.patch(`/reservations/${id}/conclude`, { userId, bookId });
                 alert('Reserva concluída com sucesso e um empréstimo foi criado.');
             }
 

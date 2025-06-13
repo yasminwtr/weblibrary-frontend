@@ -6,7 +6,7 @@ export function useCategories() {
 
     const fetchCategories = useCallback(async () => {
         try {
-            const res = await api.get(`/categories`, { withCredentials: true });
+            const res = await api.get(`/categories`);
             setCategories(res.data);
 
         } catch (err) {

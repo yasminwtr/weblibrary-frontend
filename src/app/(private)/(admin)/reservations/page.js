@@ -1,43 +1,36 @@
-import { notFound } from 'next/navigation'
-import { api } from "@/services/api";
-import ReservationsAdmin from "@/components/ReservationsAdmin";
-import { cookies } from 'next/headers'
+'use client';
+import { useEffect, useState } from 'react';
+import { api } from '@/services/api';
+import { useRouter } from 'next/navigation';
+import ReservationsAdmin from '@/components/ReservationsAdmin';
 
-async function getToken() {
-    const cookieStore = await cookies();
-    return cookieStore.get('token')?.value;
-}
+export default function ReservationsPage() {
+  const [reservations, setReservations] = useState(null);
+  const router = useRouter();
 
-async function fetchAllReservations(token) {
-    try {
-        const res = await api.get(`/reservations`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
+  useEffect(() => {
+    const fetchReservations = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return router.replace('/login');
+
+      try {
+        const res = await api.get('/reservations', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
-        return res.data;
+        setReservations(res.data);
+      } catch (err) {
+        console.error('Erro ao buscar reservas:', err);
+        router.replace('/login');
+      }
+    };
 
-    } catch (err) {
-        console.error('Erro ao buscar as reservas:', err);
-        return undefined;
-    }
-}
+    fetchReservations();
+  }, [router]);
 
-export default async function ReservationsPage() {
-    const token = await getToken();
-    if (!token) {
-        notFound();
-    }
+  if (!reservations) return null;
 
-    const [initialReservations] = await Promise.all([
-        fetchAllReservations(token),
-    ]);
-
-    if (!initialReservations) {
-        notFound();
-    }
-
-    return <ReservationsAdmin initialReservations={initialReservations} />;
+  return <ReservationsAdmin initialReservations={reservations} />;
 }
