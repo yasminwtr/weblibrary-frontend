@@ -1,3 +1,9 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { api } from '@/services/api';
+import { useRouter } from 'next/navigation';
+import BooksAdmin from '@/components/BooksAdmin';
+
 export default function BooksPage() {
   const [books, setBooks] = useState(null);
   const router = useRouter();
