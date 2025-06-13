@@ -29,7 +29,7 @@ export default function UserReservationsPage() {
     fetchData();
   }, [router]);
 
-  if (!userReservationsLoans) return <p>Carregando...</p>;
+  if (!userReservationsLoans) return null;
 
   return <ReservationsInfo userReservationsLoans={userReservationsLoans} />;
 }

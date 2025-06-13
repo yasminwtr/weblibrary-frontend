@@ -5,11 +5,12 @@ import { useUser } from '@/contexts/UserContext';
 import { api } from "@/services/api";
 
 export default function BookInfo({ book, availability, breadcrumbContext }) {
-    const { id, title, author, publisher, year, synopsis } = book;
+    const { id, title, author, publisher, year, synopsis, image } = book;
     const isAvaliable = availability.availableCopies > 0;
     const { category, search } = breadcrumbContext || {};
     const { user } = useUser();
     const intermediateCrumb = category ? category : search ? `"${search}"` : null;
+    const imageUrl = image ? `https://weblibrary-api.up.railway.app${image}` : null;
 
     const handleReservation = async () => {
         const availabilityRes = await api.get(`/books/${book.id}/availability`);
@@ -42,7 +43,15 @@ export default function BookInfo({ book, availability, breadcrumbContext }) {
             </Breadcrumbs>
 
             <div className="book-info-container">
-                <div className="book-info-image"></div>
+                <div
+                    className="book-info-image"
+                    style={{
+                        backgroundImage: book.image
+                            ? `url(https://weblibrary-api.up.railway.app${book.image})`
+                            : 'none',
+                        backgroundColor: book.image ? 'transparent' : '#ddd',
+                    }}
+                />
 
                 <div className="book-info">
                     <h1 className="text-2xl font-bold mb-1">{title}</h1>
@@ -80,7 +89,7 @@ export default function BookInfo({ book, availability, breadcrumbContext }) {
 
             <Divider className="my-8" />
 
-            <BookReviews bookId={id}/>
+            <BookReviews bookId={id} />
         </div>
     );
 }

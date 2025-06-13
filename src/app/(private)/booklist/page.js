@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { api } from "@/services/api";
 import BookList from "@/components/Booklist";
 
-async function fetchBooks(searchParams) {
+async function fetchBookList(searchParams) {
     try {
         const res = await api.get(`/books`, { params: searchParams });
         return res.data;
@@ -14,7 +14,7 @@ async function fetchBooks(searchParams) {
 }
 
 export default async function BookListPage({ searchParams }) {
-    const books = await fetchBooks(searchParams);
+    const books = await fetchBookList(searchParams);
 
     if (!books) {
         notFound();

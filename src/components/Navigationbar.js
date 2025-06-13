@@ -4,7 +4,6 @@ import { AcmeLogo, SearchIcon, BookIcon, LogoutIcon } from "@/components/Icons";
 import { useUser } from '@/contexts/UserContext';
 import { useRouter } from "next/navigation";
 import { useCategories } from "@/hooks/useCategories";
-import Cookies from 'js-cookie';
 import { useEffect, useState } from "react";
 
 export const Navigationbar = () => {
@@ -55,10 +54,10 @@ export const Navigationbar = () => {
                                     base: "gap-4",
                                 }}
                             >
-                                <DropdownItem key="books" href="books">Livros</DropdownItem>
-                                <DropdownItem key="reservations" href="reservations">Reservas</DropdownItem>
-                                <DropdownItem key="loans" href="loans">Empréstimos</DropdownItem>
-                                <DropdownItem key="users" href="users">Usuários</DropdownItem>
+                                <DropdownItem key="books" href="/books">Livros</DropdownItem>
+                                <DropdownItem key="reservations" href="/reservations">Reservas</DropdownItem>
+                                <DropdownItem key="loans" href="/loans">Empréstimos</DropdownItem>
+                                <DropdownItem key="users" href="/users">Usuários</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     )}
@@ -82,7 +81,7 @@ export const Navigationbar = () => {
                             }}
                         >
                             {categories.map((category) => (
-                                <DropdownItem key={category.id} href={`booklist?category=${category.name}`}>
+                                <DropdownItem key={category.id} href={`/booklist?category=${category.name}`}>
                                     {category.name}
                                 </DropdownItem>
                             ))}
@@ -122,7 +121,7 @@ export const Navigationbar = () => {
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
                             {user?.userType === 'reader' && (
-                                <DropdownItem key="settings" startContent={<BookIcon className={iconClasses} />} href="myreservations">Minhas reservas</DropdownItem>
+                                <DropdownItem key="settings" startContent={<BookIcon className={iconClasses} />} href="/myreservations">Minhas reservas</DropdownItem>
                             )}
 
                             <DropdownItem key="logout" color="danger" startContent={<LogoutIcon className={iconClasses} />}

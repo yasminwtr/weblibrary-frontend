@@ -13,11 +13,7 @@ export default function BooksPage() {
     if (!token) return router.replace('/login');
 
     try {
-      const res = await api.get('/books', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await api.get('/books');
       setBooks(res.data);
     } catch (err) {
       console.error('Erro ao buscar livros:', err);
@@ -31,5 +27,5 @@ export default function BooksPage() {
 
   if (!books) return null;
 
-  return <BooksAdmin initialBooks={books} fetchBooks={fetchBooks} />;
+  return <BooksAdmin books={books} fetchBooks={fetchBooks} />;
 }

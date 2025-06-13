@@ -16,7 +16,7 @@ export const columns = [
     { name: "AÇÕES", uid: "actions" },
 ];
 
-export default function BooksAdmin({ initialBooks, fetchBooks }) {
+export default function BooksAdmin({ books, fetchBooks }) {
     const [book, setBook] = useState(null);
     const { categories, fetchCategories } = useCategories();
     const bookModal = useDisclosure();
@@ -92,7 +92,7 @@ export default function BooksAdmin({ initialBooks, fetchBooks }) {
             <h1 className="text-lg font-semibold mb-4">Livros</h1>
 
             <TableFunctions
-                items={initialBooks}
+                items={books.books}
                 columns={columns}
                 renderCell={renderCell}
                 addButton={true}

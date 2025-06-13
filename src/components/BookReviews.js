@@ -11,16 +11,21 @@ export default function BookReviews({ bookId }) {
     const [currentPage, setCurrentPage] = useState(1);
     const { user } = useUser();
     const { fetchBookReviews, bookReviews } = useBookReviews(bookId);
+    const [comment, setComment] = useState('')
 
     const createReview = async () => {
+        if (comment === '') {
+            alert('Preencha sua avaliação.')
+        }
+
         try {
             await api.post('/bookreviews',
-                { bookId: bookId, comment: document.querySelector('textarea').value }
+                { bookId: bookId, comment: comment }
             );
 
             alert('Avaliação realizada com sucesso.');
             fetchBookReviews();
-            document.querySelector('textarea').value = '';
+            setComment('');
 
         } catch (err) {
             alert(err?.response?.data?.error)
@@ -43,7 +48,13 @@ export default function BookReviews({ bookId }) {
         <div className="w-full mb-20">
             <h1 className="text-lg font-medium mb-8">Avaliações ({bookReviews.totalBookReviews})</h1>
 
-            <Textarea rows="6" placeholder="Escreva sua avaliação" disableAutosize classNames={{ base: "mb-5", inputWrapper: "border-2" }} />
+            <Textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                rows="6"
+                placeholder="Escreva sua avaliação"
+                disableAutosize classNames={{ base: "mb-5", inputWrapper: "border-2" }}
+            />
 
             <Button color="primary" className="" onPress={createReview}>Avaliar</Button>
 
@@ -79,7 +90,7 @@ export default function BookReviews({ bookId }) {
                 <PaginationControl
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
-                    totalPages={bookReviews.totalPages}
+                    totalPages={bookReviews.totalPages === 0 ? 1 : bookReviews.totalPages}
                 />
             </div>
         </div>
