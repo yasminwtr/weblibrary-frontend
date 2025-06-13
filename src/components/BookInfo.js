@@ -10,7 +10,6 @@ export default function BookInfo({ book, availability, breadcrumbContext }) {
     const { category, search } = breadcrumbContext || {};
     const { user } = useUser();
     const intermediateCrumb = category ? category : search ? `"${search}"` : null;
-    const imageUrl = image ? `https://weblibrary-api.up.railway.app${image}` : null;
 
     const handleReservation = async () => {
         const availabilityRes = await api.get(`/books/${book.id}/availability`);

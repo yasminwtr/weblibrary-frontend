@@ -95,7 +95,14 @@ export default function BookList({ booksValues }) {
                                 {filteredBooks.map((book) => {
                                     return (
                                         <div className="book" key={book.id} onClick={() => router.push(`/booklist/${book.id}`)}>
-                                            <div className="book-image"></div>
+                                            <div
+                                                className="book-image"
+                                                style={{
+                                                    backgroundImage: book.image
+                                                        ? `url(https://weblibrary-api.up.railway.app${book.image})`
+                                                        : 'none',
+                                                    backgroundColor: book.image ? 'transparent' : '#ddd',
+                                                }}></div>
                                             <div className="title-and-rating">
                                                 <span id="title" title={book.title}>{book.title}</span>
 

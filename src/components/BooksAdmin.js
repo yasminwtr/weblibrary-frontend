@@ -58,7 +58,7 @@ export default function BooksAdmin({ books, fetchBooks }) {
                 return (
                     <User
                         avatarProps={{
-                            src: `${process.env.NEXT_PUBLIC_API_BASE_URL}${book.image}`,
+                            src: `https://weblibrary-api.up.railway.app${book.image}`,
                             className: "rounded-sm"
                         }}
                         description={book.author}
